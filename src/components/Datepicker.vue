@@ -53,7 +53,8 @@
       @changed-month="handleChangedMonthFromDayPicker"
       @select-date="selectDate"
       @show-month-calendar="showMonthCalendar"
-      @selected-disabled="selectDisabledDate">
+      @selected-disabled="selectDisabledDate"
+      @delete-date="deleteDate">
       <slot name="beforeCalendarHeader" slot="beforeCalendarHeader"></slot>
     </picker-day>
 
@@ -326,6 +327,9 @@ export default {
       this.close()
       this.showMonthView = true
       return true
+    },
+    deleteDate () {
+      this.$emit('delete-date')
     },
     /**
      * Show the year picker
