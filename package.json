@@ -32,7 +32,6 @@
     "lint": "eslint --ext .js,.vue src test/unit/specs",
     "prepublishOnly": "yarn build"
   },
-  "install": "yarn lint && rm -rf dist/* && babel-node scripts/build.js && babel-node scripts/build-locale.js",
   "pre-commit": [
     "lint",
     "test"
