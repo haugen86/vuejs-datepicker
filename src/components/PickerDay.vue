@@ -24,6 +24,11 @@
           v-html="dayCellContent(day)"
           @click="selectDate(day)"></span>
     </div>
+    <div>
+      <button class="bg-transparent hover:bg-blue text-blue-dark font-semibold hover:text-white py-2 px-4 border border-blue hover:border-transparent rounded" @click="deleteDate" v-if="deleteButton">
+          {{ this.deleteButtonText }}
+      </button>
+    </div>
   </div>
 </template>
 <script>
@@ -33,6 +38,8 @@ export default {
     showDayView: Boolean,
     selectedDate: Date,
     pageDate: Date,
+    deleteButton: Boolean,
+    deleteButtonText: String,
     pageTimestamp: Number,
     fullMonthName: Boolean,
     allowedToShowView: Function,
@@ -180,6 +187,9 @@ export default {
     }
   },
   methods: {
+    deleteDate () {
+      this.$emit('delete-date')
+    },
     selectDate (date) {
       if (date.isDisabled) {
         this.$emit('selected-disabled', date)

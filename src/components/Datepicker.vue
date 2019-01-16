@@ -44,6 +44,8 @@
       :calendarStyle="calendarStyle"
       :translation="translation"
       :pageTimestamp="pageTimestamp"
+      :deleteButton="deleteButton"
+      :deleteButtonText="deleteButtonText"
       :isRtl="isRtl"
       :mondayFirst="mondayFirst"
       :dayCellContent="dayCellContent"
@@ -112,6 +114,14 @@ export default {
       validator: (val) => {
         return val === null || val instanceof Date || typeof val === 'string' || typeof val === 'number'
       }
+    },
+    deletebutton: {
+      type: Boolean,
+      default: false
+    },
+    deleteButtonText: {
+      type: String,
+      default: 'Delete'
     },
     name: String,
     refName: String,
