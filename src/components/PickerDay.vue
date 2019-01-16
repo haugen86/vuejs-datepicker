@@ -25,7 +25,7 @@
           @click="selectDate(day)"></span>
     </div>
     <div class="flex mt-2 mb-2 px-2" v-if="deleteButton">
-      <button class="ml-auto bg-transparent hover:bg-red text-red-dark font-semibold hover:text-white py-2 px-4 border border-blue hover:border-transparent rounded" @click="deleteDate">
+      <button class="ml-auto bg-transparent hover:bg-red text-red-dark font-semibold hover:text-white py-2 px-4 border border-red hover:border-transparent rounded" @click="deleteDate">
           {{ this.deleteButtonText }}
       </button>
     </div>
