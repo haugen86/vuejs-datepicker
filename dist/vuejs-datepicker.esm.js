@@ -1440,10 +1440,11 @@ var Datepicker = {render: function(){var _vm=this;var _h=_vm.$createElement;var 
      */
     setValue: function setValue (date) {
       if (typeof date === 'string' || typeof date === 'number') {
-        console.log(date);
-        var parsed = new Date(date.replace(/-/g, '/'));
+        if (typeof date === 'string') {
+          date = date.replace(/-/g, '/');
+        }
+        var parsed = new Date(date);
         date = isNaN(parsed.valueOf()) ? null : parsed;
-        console.log(date);
       }
       if (!date) {
         this.setPageDate();
