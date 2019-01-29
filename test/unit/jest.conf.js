@@ -19,5 +19,6 @@ module.exports = {
   collectCoverageFrom: [
     'src/**/*.{js,vue}',
     '!src/locale/translations/**/*.js'
-  ]
+  ],
+  testURL: 'http://localhost/'
 }
