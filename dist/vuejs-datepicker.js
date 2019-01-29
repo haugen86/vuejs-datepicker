@@ -301,12 +301,10 @@
      * @return {Array}
      */
     createDateArray: function createDateArray (start, end) {
-      var this$1 = this;
-
       var dates = [];
       while (start <= end) {
         dates.push(new Date(start));
-        start = this$1.setDate(new Date(start), this$1.getDate(new Date(start)) + 1);
+        start = this.setDate(new Date(start), this.getDate(new Date(start)) + 1);
       }
       return dates
     }
@@ -520,8 +518,6 @@
        * @return {Object[]}
        */
       days: function days () {
-        var this$1 = this;
-
         var d = this.pageDate;
         var days = [];
         // set up a new date object to the beginning of the current 'page'
@@ -531,19 +527,19 @@
         var daysInMonth = this.utils.daysInMonth(this.utils.getFullYear(dObj), this.utils.getMonth(dObj));
         for (var i = 0; i < daysInMonth; i++) {
           days.push({
-            date: this$1.utils.getDate(dObj),
+            date: this.utils.getDate(dObj),
             timestamp: dObj.getTime(),
-            isSelected: this$1.isSelectedDate(dObj),
-            isDisabled: this$1.isDisabledDate(dObj),
-            isHighlighted: this$1.isHighlightedDate(dObj),
-            isHighlightStart: this$1.isHighlightStart(dObj),
-            isHighlightEnd: this$1.isHighlightEnd(dObj),
-            isToday: this$1.utils.compareDates(dObj, new Date()),
-            isWeekend: this$1.utils.getDay(dObj) === 0 || this$1.utils.getDay(dObj) === 6,
-            isSaturday: this$1.utils.getDay(dObj) === 6,
-            isSunday: this$1.utils.getDay(dObj) === 0
+            isSelected: this.isSelectedDate(dObj),
+            isDisabled: this.isDisabledDate(dObj),
+            isHighlighted: this.isHighlightedDate(dObj),
+            isHighlightStart: this.isHighlightStart(dObj),
+            isHighlightEnd: this.isHighlightEnd(dObj),
+            isToday: this.utils.compareDates(dObj, new Date()),
+            isWeekend: this.utils.getDay(dObj) === 0 || this.utils.getDay(dObj) === 6,
+            isSaturday: this.utils.getDay(dObj) === 6,
+            isSunday: this.utils.getDay(dObj) === 0
           });
-          this$1.utils.setDate(dObj, this$1.utils.getDate(dObj) + 1);
+          this.utils.setDate(dObj, this.utils.getDate(dObj) + 1);
         }
         return days
       },
@@ -838,8 +834,6 @@
     },
     computed: {
       months: function months () {
-        var this$1 = this;
-
         var d = this.pageDate;
         var months = [];
         // set up a new date object to the beginning of the current 'page'
@@ -848,12 +842,12 @@
           : new Date(d.getFullYear(), 0, d.getDate(), d.getHours(), d.getMinutes());
         for (var i = 0; i < 12; i++) {
           months.push({
-            month: this$1.utils.getMonthName(i, this$1.translation.months),
+            month: this.utils.getMonthName(i, this.translation.months),
             timestamp: dObj.getTime(),
-            isSelected: this$1.isSelectedMonth(dObj),
-            isDisabled: this$1.isDisabledMonth(dObj)
+            isSelected: this.isSelectedMonth(dObj),
+            isDisabled: this.isDisabledMonth(dObj)
           });
-          this$1.utils.setMonth(dObj, this$1.utils.getMonth(dObj) + 1);
+          this.utils.setMonth(dObj, this.utils.getMonth(dObj) + 1);
         }
         return months
       },
@@ -1013,8 +1007,6 @@
     },
     computed: {
       years: function years () {
-        var this$1 = this;
-
         var d = this.pageDate;
         var years = [];
         // set up a new date object to the beginning of the current 'page'7
@@ -1023,12 +1015,12 @@
           : new Date(Math.floor(d.getFullYear() / 10) * 10, d.getMonth(), d.getDate(), d.getHours(), d.getMinutes());
         for (var i = 0; i < 10; i++) {
           years.push({
-            year: this$1.utils.getFullYear(dObj),
+            year: this.utils.getFullYear(dObj),
             timestamp: dObj.getTime(),
-            isSelected: this$1.isSelectedYear(dObj),
-            isDisabled: this$1.isDisabledYear(dObj)
+            isSelected: this.isSelectedYear(dObj),
+            isDisabled: this.isDisabledYear(dObj)
           });
-          this$1.utils.setFullYear(dObj, this$1.utils.getFullYear(dObj) + 1);
+          this.utils.setFullYear(dObj, this.utils.getFullYear(dObj) + 1);
         }
         return years
       },
@@ -1371,7 +1363,6 @@
         return true
       },
       deleteDate: function deleteDate () {
-        console.log('deleting date');
         this.$emit('delete-date');
       },
       /**
@@ -1455,8 +1446,10 @@
        */
       setValue: function setValue (date) {
         if (typeof date === 'string' || typeof date === 'number') {
-          var parsed = new Date(date);
+          console.log(date);
+          var parsed = new Date(date.replace(/-/g, '/'));
           date = isNaN(parsed.valueOf()) ? null : parsed;
+          console.log(date);
         }
         if (!date) {
           this.setPageDate();

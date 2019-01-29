@@ -412,7 +412,7 @@ export default {
      */
     setValue (date) {
       if (typeof date === 'string' || typeof date === 'number') {
-        let parsed = new Date(date)
+        let parsed = new Date(date.replace(/-/g, '/'))
         date = isNaN(parsed.valueOf()) ? null : parsed
       }
       if (!date) {
