@@ -438,6 +438,10 @@ var PickerDay = {render: function(){var _vm=this;var _h=_vm.$createElement;var _
       type: Function,
       default: function (day) { return day.date; }
     },
+    fixed: {
+      type: Boolean,
+      default: false
+    },
     disabledDates: Object,
     highlighted: Object,
     calendarClass: [String, Object, Array],
@@ -459,21 +463,43 @@ var PickerDay = {render: function(){var _vm=this;var _h=_vm.$createElement;var _
 
       if (this.showDayView) {
         this.$nextTick(function () {
-          var parent = document.querySelector('#worklist');
-          if (parent) {
+          var parent = this$1.$parent.$el;
+          var listParent = document.querySelector('#worklist');
+          if (listParent) {
             var calendar = this$1.$refs.datepicker;
 
-            var outOfBoundsRight = calendar.getBoundingClientRect().right > parent.getBoundingClientRect().right;
-            var outOfBoundsBottom = calendar.getBoundingClientRect().bottom > parent.getBoundingClientRect().bottom;
+            var outOfBoundsRight = calendar.getBoundingClientRect().right > listParent.getBoundingClientRect().right;
+            var outOfBoundsBottom = calendar.getBoundingClientRect().bottom > listParent.getBoundingClientRect().bottom;
 
-            if (outOfBoundsBottom) {
-              var bottom = (calendar.getBoundingClientRect().bottom - parent.getBoundingClientRect().bottom) + 15;
-              calendar.style.top = "-" + bottom + "px";
-            }
+            if (this$1.fixed) {
+              calendar.style.position = 'fixed';
+              var bottom = window.innerHeight - parent.getBoundingClientRect().top - calendar.offsetHeight - 15;
+              var right = window.innerWidth - parent.getBoundingClientRect().left - calendar.offsetWidth;
+              calendar.style.bottom = bottom + "px";
+              calendar.style.right = right + "px";
+              outOfBoundsBottom = calendar.getBoundingClientRect().bottom > listParent.getBoundingClientRect().bottom;
 
-            if (outOfBoundsRight) {
-              var right = (calendar.getBoundingClientRect().right - parent.getBoundingClientRect().right) + 15;
-              calendar.style.left = "-" + right + "px";
+              if (outOfBoundsBottom) {
+                bottom = window.innerHeight - parent.getBoundingClientRect().bottom + 15;
+                calendar.style.bottom = bottom + "px";
+              }
+
+              outOfBoundsRight = calendar.getBoundingClientRect().right > listParent.getBoundingClientRect().right;
+              if (outOfBoundsRight) {
+                right = window.innerWidth - parent.getBoundingClientRect().right;
+                calendar.style.right = right + "px";
+              }
+              console.log(calendar.style.bottom);
+            } else {
+              if (outOfBoundsBottom) {
+                var bottom$1 = (calendar.getBoundingClientRect().bottom - listParent.getBoundingClientRect().bottom) + 15;
+                calendar.style.top = "-" + bottom$1 + "px";
+              }
+
+              if (outOfBoundsRight) {
+                var right$1 = (calendar.getBoundingClientRect().right - listParent.getBoundingClientRect().right) + 15;
+                calendar.style.right = "-" + right$1 + "px";
+              }
             }
           }
         });
@@ -1131,7 +1157,7 @@ var PickerYear = {render: function(){var _vm=this;var _h=_vm.$createElement;var 
 ;
 
 (function(){ if(typeof document !== 'undefined'){ var head=document.head||document.getElementsByTagName('head')[0], style=document.createElement('style'), css=".rtl { direction: rtl; } .vdp-datepicker { position: relative; text-align: left; } .vdp-datepicker * { box-sizing: border-box; } .vdp-datepicker__calendar { position: absolute; z-index: 100; background: #fff; width: 300px; border: 1px solid #ccc; } .vdp-datepicker__calendar header { display: block; line-height: 40px; } .vdp-datepicker__calendar header span { display: inline-block; text-align: center; width: 71.42857142857143%; float: left; } .vdp-datepicker__calendar header .prev, .vdp-datepicker__calendar header .next { width: 14.285714285714286%; float: left; text-indent: -10000px; position: relative; } .vdp-datepicker__calendar header .prev:after, .vdp-datepicker__calendar header .next:after { content: ''; position: absolute; left: 50%; top: 50%; -webkit-transform: translateX(-50%) translateY(-50%); transform: translateX(-50%) translateY(-50%); border: 6px solid transparent; } .vdp-datepicker__calendar header .prev:after { border-right: 10px solid #000; margin-left: -5px; } .vdp-datepicker__calendar header .prev.disabled:after { border-right: 10px solid #ddd; } .vdp-datepicker__calendar header .next:after { border-left: 10px solid #000; margin-left: 5px; } .vdp-datepicker__calendar header .next.disabled:after { border-left: 10px solid #ddd; } .vdp-datepicker__calendar header .prev:not(.disabled), .vdp-datepicker__calendar header .next:not(.disabled), .vdp-datepicker__calendar header .up:not(.disabled) { cursor: pointer; } .vdp-datepicker__calendar header .prev:not(.disabled):hover, .vdp-datepicker__calendar header .next:not(.disabled):hover, .vdp-datepicker__calendar header .up:not(.disabled):hover { background: #eee; } .vdp-datepicker__calendar .disabled { color: #ddd; cursor: default; } .vdp-datepicker__calendar .flex-rtl { display: flex; width: inherit; flex-wrap: wrap; } .vdp-datepicker__calendar .cell { display: inline-block; padding: 0 5px; width: 14.285714285714286%; height: 40px; line-height: 40px; text-align: center; vertical-align: middle; border: 1px solid transparent; } .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).day, .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).month, .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).year { cursor: pointer; } .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).day:hover, .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).month:hover, .vdp-datepicker__calendar .cell:not(.blank):not(.disabled).year:hover { border: 1px solid #4bd; } .vdp-datepicker__calendar .cell.selected { background: #4bd; } .vdp-datepicker__calendar .cell.selected:hover { background: #4bd; } .vdp-datepicker__calendar .cell.selected.highlighted { background: #4bd; } .vdp-datepicker__calendar .cell.highlighted { background: #cae5ed; } .vdp-datepicker__calendar .cell.highlighted.disabled { color: #a3a3a3; } .vdp-datepicker__calendar .cell.grey { color: #888; } .vdp-datepicker__calendar .cell.grey:hover { background: inherit; } .vdp-datepicker__calendar .cell.day-header { font-size: 75%; white-space: nowrap; cursor: inherit; } .vdp-datepicker__calendar .cell.day-header:hover { background: inherit; } .vdp-datepicker__calendar .month, .vdp-datepicker__calendar .year { width: 33.333%; } .vdp-datepicker__clear-button, .vdp-datepicker__calendar-button { cursor: pointer; font-style: normal; } .vdp-datepicker__clear-button.disabled, .vdp-datepicker__calendar-button.disabled { color: #999; cursor: default; } "; style.type='text/css'; if (style.styleSheet){ style.styleSheet.cssText = css; } else { style.appendChild(document.createTextNode(css)); } head.appendChild(style); } })();
-var Datepicker = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vdp-datepicker",class:[_vm.wrapperClass, _vm.isRtl ? 'rtl' : '']},[_c('date-input',{attrs:{"selectedDate":_vm.selectedDate,"resetTypedDate":_vm.resetTypedDate,"format":_vm.format,"translation":_vm.translation,"inline":_vm.inline,"id":_vm.id,"name":_vm.name,"refName":_vm.refName,"openDate":_vm.openDate,"placeholder":_vm.placeholder,"inputClass":_vm.inputClass,"typeable":_vm.typeable,"clearButton":_vm.clearButton,"clearButtonIcon":_vm.clearButtonIcon,"calendarButton":_vm.calendarButton,"calendarButtonIcon":_vm.calendarButtonIcon,"calendarButtonIconContent":_vm.calendarButtonIconContent,"disabled":_vm.disabled,"required":_vm.required,"bootstrapStyling":_vm.bootstrapStyling,"use-utc":_vm.useUtc},on:{"show-calendar":_vm.showCalendar,"close-calendar":_vm.close,"typed-date":_vm.setTypedDate,"clear-date":_vm.clearDate}},[_vm._t("afterDateInput",null,{slot:"afterDateInput"})],2),_vm._v(" "),(_vm.allowedToShowView('day'))?_c('picker-day',{attrs:{"pageDate":_vm.pageDate,"selectedDate":_vm.selectedDate,"showDayView":_vm.showDayView,"fullMonthName":_vm.fullMonthName,"allowedToShowView":_vm.allowedToShowView,"disabledDates":_vm.disabledDates,"highlighted":_vm.highlighted,"calendarClass":_vm.calendarClass,"calendarStyle":_vm.calendarStyle,"translation":_vm.translation,"pageTimestamp":_vm.pageTimestamp,"deleteButton":_vm.deleteButton,"deleteButtonText":_vm.deleteButtonText,"isRtl":_vm.isRtl,"mondayFirst":_vm.mondayFirst,"dayCellContent":_vm.dayCellContent,"use-utc":_vm.useUtc},on:{"changed-month":_vm.handleChangedMonthFromDayPicker,"select-date":_vm.selectDate,"show-month-calendar":_vm.showMonthCalendar,"selected-disabled":_vm.selectDisabledDate,"delete-date":_vm.deleteDate}},[_vm._t("beforeCalendarHeader",null,{slot:"beforeCalendarHeader"})],2):_vm._e(),_vm._v(" "),(_vm.allowedToShowView('month'))?_c('picker-month',{attrs:{"pageDate":_vm.pageDate,"selectedDate":_vm.selectedDate,"showMonthView":_vm.showMonthView,"allowedToShowView":_vm.allowedToShowView,"disabledDates":_vm.disabledDates,"calendarClass":_vm.calendarClass,"calendarStyle":_vm.calendarStyle,"translation":_vm.translation,"isRtl":_vm.isRtl,"use-utc":_vm.useUtc},on:{"select-month":_vm.selectMonth,"show-year-calendar":_vm.showYearCalendar,"changed-year":_vm.setPageDate}},[_vm._t("beforeCalendarHeader",null,{slot:"beforeCalendarHeader"})],2):_vm._e(),_vm._v(" "),(_vm.allowedToShowView('year'))?_c('picker-year',{attrs:{"pageDate":_vm.pageDate,"selectedDate":_vm.selectedDate,"showYearView":_vm.showYearView,"allowedToShowView":_vm.allowedToShowView,"disabledDates":_vm.disabledDates,"calendarClass":_vm.calendarClass,"calendarStyle":_vm.calendarStyle,"translation":_vm.translation,"isRtl":_vm.isRtl,"use-utc":_vm.useUtc},on:{"select-year":_vm.selectYear,"changed-decade":_vm.setPageDate}},[_vm._t("beforeCalendarHeader",null,{slot:"beforeCalendarHeader"})],2):_vm._e()],1)},staticRenderFns: [],
+var Datepicker = {render: function(){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('div',{staticClass:"vdp-datepicker",class:[_vm.wrapperClass, _vm.isRtl ? 'rtl' : '']},[_c('date-input',{attrs:{"selectedDate":_vm.selectedDate,"resetTypedDate":_vm.resetTypedDate,"format":_vm.format,"translation":_vm.translation,"inline":_vm.inline,"id":_vm.id,"name":_vm.name,"refName":_vm.refName,"openDate":_vm.openDate,"placeholder":_vm.placeholder,"inputClass":_vm.inputClass,"typeable":_vm.typeable,"clearButton":_vm.clearButton,"clearButtonIcon":_vm.clearButtonIcon,"calendarButton":_vm.calendarButton,"calendarButtonIcon":_vm.calendarButtonIcon,"calendarButtonIconContent":_vm.calendarButtonIconContent,"disabled":_vm.disabled,"required":_vm.required,"bootstrapStyling":_vm.bootstrapStyling,"use-utc":_vm.useUtc},on:{"show-calendar":_vm.showCalendar,"close-calendar":_vm.close,"typed-date":_vm.setTypedDate,"clear-date":_vm.clearDate}},[_vm._t("afterDateInput",null,{slot:"afterDateInput"})],2),_vm._v(" "),(_vm.allowedToShowView('day'))?_c('picker-day',{attrs:{"pageDate":_vm.pageDate,"selectedDate":_vm.selectedDate,"showDayView":_vm.showDayView,"fullMonthName":_vm.fullMonthName,"allowedToShowView":_vm.allowedToShowView,"disabledDates":_vm.disabledDates,"highlighted":_vm.highlighted,"calendarClass":_vm.calendarClass,"calendarStyle":_vm.calendarStyle,"translation":_vm.translation,"pageTimestamp":_vm.pageTimestamp,"deleteButton":_vm.deleteButton,"deleteButtonText":_vm.deleteButtonText,"isRtl":_vm.isRtl,"mondayFirst":_vm.mondayFirst,"dayCellContent":_vm.dayCellContent,"use-utc":_vm.useUtc,"fixed":_vm.fixed},on:{"changed-month":_vm.handleChangedMonthFromDayPicker,"select-date":_vm.selectDate,"show-month-calendar":_vm.showMonthCalendar,"selected-disabled":_vm.selectDisabledDate,"delete-date":_vm.deleteDate}},[_vm._t("beforeCalendarHeader",null,{slot:"beforeCalendarHeader"})],2):_vm._e(),_vm._v(" "),(_vm.allowedToShowView('month'))?_c('picker-month',{attrs:{"pageDate":_vm.pageDate,"selectedDate":_vm.selectedDate,"showMonthView":_vm.showMonthView,"allowedToShowView":_vm.allowedToShowView,"disabledDates":_vm.disabledDates,"calendarClass":_vm.calendarClass,"calendarStyle":_vm.calendarStyle,"translation":_vm.translation,"isRtl":_vm.isRtl,"use-utc":_vm.useUtc},on:{"select-month":_vm.selectMonth,"show-year-calendar":_vm.showYearCalendar,"changed-year":_vm.setPageDate}},[_vm._t("beforeCalendarHeader",null,{slot:"beforeCalendarHeader"})],2):_vm._e(),_vm._v(" "),(_vm.allowedToShowView('year'))?_c('picker-year',{attrs:{"pageDate":_vm.pageDate,"selectedDate":_vm.selectedDate,"showYearView":_vm.showYearView,"allowedToShowView":_vm.allowedToShowView,"disabledDates":_vm.disabledDates,"calendarClass":_vm.calendarClass,"calendarStyle":_vm.calendarStyle,"translation":_vm.translation,"isRtl":_vm.isRtl,"use-utc":_vm.useUtc},on:{"select-year":_vm.selectYear,"changed-decade":_vm.setPageDate}},[_vm._t("beforeCalendarHeader",null,{slot:"beforeCalendarHeader"})],2):_vm._e()],1)},staticRenderFns: [],
   components: {
     DateInput: DateInput,
     PickerDay: PickerDay,
@@ -1143,6 +1169,10 @@ var Datepicker = {render: function(){var _vm=this;var _h=_vm.$createElement;var 
       validator: function (val) {
         return val === null || val instanceof Date || typeof val === 'string' || typeof val === 'number'
       }
+    },
+    fixed: {
+      type: Boolean,
+      default: false
     },
     deleteButton: {
       type: Boolean,

@@ -47,6 +47,10 @@ export default {
       type: Function,
       default: day => day.date
     },
+    fixed: {
+      type: Boolean,
+      default: false
+    },
     disabledDates: Object,
     highlighted: Object,
     calendarClass: [String, Object, Array],
@@ -66,21 +70,43 @@ export default {
     showDayView: function () {
       if (this.showDayView) {
         this.$nextTick(() => {
-          let parent = document.querySelector('#worklist')
-          if (parent) {
+          let parent = this.$parent.$el
+          let listParent = document.querySelector('#worklist')
+          if (listParent) {
             let calendar = this.$refs.datepicker
 
-            let outOfBoundsRight = calendar.getBoundingClientRect().right > parent.getBoundingClientRect().right
-            let outOfBoundsBottom = calendar.getBoundingClientRect().bottom > parent.getBoundingClientRect().bottom
+            let outOfBoundsRight = calendar.getBoundingClientRect().right > listParent.getBoundingClientRect().right
+            let outOfBoundsBottom = calendar.getBoundingClientRect().bottom > listParent.getBoundingClientRect().bottom
 
-            if (outOfBoundsBottom) {
-              let bottom = (calendar.getBoundingClientRect().bottom - parent.getBoundingClientRect().bottom) + 15
-              calendar.style.top = `-${bottom}px`
-            }
+            if (this.fixed) {
+              calendar.style.position = 'fixed'
+              let bottom = window.innerHeight - parent.getBoundingClientRect().top - calendar.offsetHeight - 15
+              let right = window.innerWidth - parent.getBoundingClientRect().left - calendar.offsetWidth
+              calendar.style.bottom = `${bottom}px`
+              calendar.style.right = `${right}px`
+              outOfBoundsBottom = calendar.getBoundingClientRect().bottom > listParent.getBoundingClientRect().bottom
 
-            if (outOfBoundsRight) {
-              let right = (calendar.getBoundingClientRect().right - parent.getBoundingClientRect().right) + 15
-              calendar.style.left = `-${right}px`
+              if (outOfBoundsBottom) {
+                bottom = window.innerHeight - parent.getBoundingClientRect().bottom + 15
+                calendar.style.bottom = `${bottom}px`
+              }
+
+              outOfBoundsRight = calendar.getBoundingClientRect().right > listParent.getBoundingClientRect().right
+              if (outOfBoundsRight) {
+                right = window.innerWidth - parent.getBoundingClientRect().right
+                calendar.style.right = `${right}px`
+              }
+              console.log(calendar.style.bottom)
+            } else {
+              if (outOfBoundsBottom) {
+                let bottom = (calendar.getBoundingClientRect().bottom - listParent.getBoundingClientRect().bottom) + 15
+                calendar.style.top = `-${bottom}px`
+              }
+
+              if (outOfBoundsRight) {
+                let right = (calendar.getBoundingClientRect().right - listParent.getBoundingClientRect().right) + 15
+                calendar.style.right = `-${right}px`
+              }
             }
           }
         })

@@ -50,6 +50,7 @@
       :mondayFirst="mondayFirst"
       :dayCellContent="dayCellContent"
       :use-utc="useUtc"
+      :fixed="fixed"
       @changed-month="handleChangedMonthFromDayPicker"
       @select-date="selectDate"
       @show-month-calendar="showMonthCalendar"
@@ -115,6 +116,10 @@ export default {
       validator: (val) => {
         return val === null || val instanceof Date || typeof val === 'string' || typeof val === 'number'
       }
+    },
+    fixed: {
+      type: Boolean,
+      default: false
     },
     deleteButton: {
       type: Boolean,
